@@ -120,9 +120,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
 
         if ($error && !$error instanceof sfValidatorErrorSchema)
         {
-          $current = $error;
-          $error = new sfValidatorErrorSchema($error->getValidator());
-          $error->addError($current);
+          $error = new sfValidatorErrorSchema($error->getValidator(), array($error));
         }
       }
       else

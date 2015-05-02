@@ -123,9 +123,10 @@ abstract class sfFormObject extends BaseForm
       $con = $this->getConnection();
     }
 
-    $con->beginTransaction();
     try
     {
+      $con->beginTransaction();
+
       $this->doSave($con);
 
       $con->commit();
@@ -150,26 +151,17 @@ abstract class sfFormObject extends BaseForm
    */
   protected function doSave($con = null)
   {
-    $this->updateObject();
-    $this->saveObject($con);
-  }
-
-  /**
-   * Save form object
-   *
-   * @param  mixed $con An optional connection object
-   */
-  public function saveObject($con = null)
-  {
     if (null === $con)
     {
       $con = $this->getConnection();
     }
 
+    $this->updateObject();
+
     $this->getObject()->save($con);
 
     // embedded forms
-    $this->saveObjectEmbeddedForms($con);
+    $this->saveEmbeddedForms($con);
   }
 
   /**
@@ -233,7 +225,7 @@ abstract class sfFormObject extends BaseForm
    * @param mixed $con   An optional connection object
    * @param array $forms An array of forms
    */
-  public function saveObjectEmbeddedForms($con = null, $forms = null)
+  public function saveEmbeddedForms($con = null, $forms = null)
   {
     if (null === $con)
     {
@@ -249,11 +241,12 @@ abstract class sfFormObject extends BaseForm
     {
       if ($form instanceof sfFormObject)
       {
-        $form->saveObject($con);
+        $form->getObject()->save($con);
+        $form->saveEmbeddedForms($con);
       }
       else
       {
-        $this->saveObjectEmbeddedForms($con, $form->getEmbeddedForms());
+        $this->saveEmbeddedForms($con, $form->getEmbeddedForms());
       }
     }
   }
