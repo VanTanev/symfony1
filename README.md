@@ -1,4 +1,7 @@
-[![Build Status](https://secure.travis-ci.org/LExpress/symfony1.png?branch=master)](http://travis-ci.org/LExpress/symfony1)
+Important!
+==========
+
+**This is an untested private fork of LExpress/symfony1 that reverts the sfForm component back to the original `v1.4.20` implementation. Usage is discouraged.**
 
 About this version
 ------------------
